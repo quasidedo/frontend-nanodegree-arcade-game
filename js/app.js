@@ -32,7 +32,7 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
   // Initial player's position
-  this.x = Math.floor(maxCols/2) * xSide;
+  this.x = Math.floor(maxCols / 2) * xSide;
   this.y = 72 + (maxRows - 2) * ySide;
   // Helps to load the image
   this.sprite = 'images/char-boy.png';
@@ -53,16 +53,24 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(key) {
   switch (key) {
     case 'left':
-      this.x -= xSide;
+      if (this.x > 0) {
+        this.x -= xSide;
+      }
       break;
     case 'up':
-      this.y -= ySide;
+      if (this.y > 0) {
+        this.y -= ySide;
+      }
       break;
     case 'right':
-      this.x += xSide;
+      if (this.x < (maxCols - 1) * xSide) {
+        this.x += xSide;
+      }
       break;
     case 'down':
-      this.y += ySide;
+      if (this.y < 72 + (maxRows - 2) * ySide) {
+        this.y += ySide;
+      }
       break;
   }
 }
