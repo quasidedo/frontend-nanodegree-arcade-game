@@ -1,3 +1,9 @@
+// Global variables
+const maxRows = 6;
+const maxCols = 5;
+const xSide = 101;
+const ySide = 83;
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -26,8 +32,8 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
   // Initial player's position
-  this.x = 202;
-  this.y = 404;
+  this.x = Math.floor(maxCols/2) * xSide;
+  this.y = 72 + (maxRows - 2) * ySide;
   // Helps to load the image
   this.sprite = 'images/char-boy.png';
 }
@@ -43,19 +49,20 @@ Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Move the player across the screen
 Player.prototype.handleInput = function(key) {
   switch (key) {
     case 'left':
-      this.x -= 101;
+      this.x -= xSide;
       break;
     case 'up':
-      this.y -= 83;
+      this.y -= ySide;
       break;
     case 'right':
-      this.x += 101;
+      this.x += xSide;
       break;
     case 'down':
-      this.y += 83;
+      this.y += ySide;
       break;
   }
 }
