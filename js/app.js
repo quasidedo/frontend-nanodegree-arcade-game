@@ -6,14 +6,6 @@ const ySide = 83;
 const yStartPlayer = 72;
 const yStartEnemy = 62;
 
-// Start new game
-function newGame(player) {
-  player.x = Math.floor(maxCols / 2) * xSide;
-  player.y = yStartPlayer + (maxRows - 2) * ySide;
-  player.lives = 3;
-  player.score = 0;
-}
-
 // Enemies our player must avoid
 var Enemy = function(yRow) {
     // Variables applied to each of our instances go here,
@@ -55,7 +47,7 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
   // Initial player's position
-  newGame(this);
+  this.newGame();
   // Helps to load the image
   this.sprite = 'images/char-boy.png';
 }
@@ -134,9 +126,17 @@ Player.prototype.handleInput = function(key) {
     }
   // Player has 0 lives, start new game
   } else {
-    newGame(this);
+    this.newGame();
   }
 };
+
+// Start new game
+Player.prototype.newGame = function() {
+  this.x = Math.floor(maxCols / 2) * xSide;
+  this.y = yStartPlayer + (maxRows - 2) * ySide;
+  this.lives = 3;
+  this.score = 0;
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
