@@ -6,6 +6,14 @@ const ySide = 83;
 const yStartPlayer = 72;
 const yStartEnemy = 62;
 
+// Start new game
+function newGame(player) {
+  player.x = Math.floor(maxCols / 2) * xSide;
+  player.y = yStartPlayer + (maxRows - 2) * ySide;
+  player.lives = 3;
+  player.score = 0;
+}
+
 // Enemies our player must avoid
 var Enemy = function(yRow) {
     // Variables applied to each of our instances go here,
@@ -21,7 +29,7 @@ var Enemy = function(yRow) {
 // Set a different speed (between 150 and 600) for each enemy's ride
 function getRandomSpeed() {
   return Math.random() * 450 + 150
-}
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -47,10 +55,7 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
   // Initial player's position
-  this.x = Math.floor(maxCols / 2) * xSide;
-  this.y = yStartPlayer + (maxRows - 2) * ySide;
-  this.lives = 3;
-  this.score = 0;
+  newGame(this);
   // Helps to load the image
   this.sprite = 'images/char-boy.png';
 }
@@ -70,45 +75,68 @@ Player.prototype.update = function() {
       player.x = Math.floor(maxCols / 2) * xSide;
       player.y = yStartPlayer + (maxRows - 2) * ySide;
       player.lives --;
+
     }
   });
+  // Player has 0 lives, hide player
+  if (player.lives <= 0) {
+    player.x = - xSide;
+  }
 };
 
 // Draw the player on the screen, required method for game
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   ctx.font = "21pt sans-serif"
+  ctx.lineWidth = 1;
   ctx.fillStyle = "white";
+  ctx.textAlign = "left";
   ctx.fillRect(0, 0, 707, 40);
   ctx.strokeText("Score: " + this.score, 30, 30);
   ctx.strokeText("Lives: " + this.lives, 570, 30);
+  // Player has 0 lives, write message
+  if (player.lives <= 0) {
+    ctx.font = "63pt sans-serif";
+    ctx.lineWidth = 4;
+    ctx.textAlign = "center";
+    ctx.strokeText("Game Over!", maxCols * xSide / 2, maxRows * ySide / 1.75);
+    ctx.fillText("Game Over!", maxCols * xSide / 2, maxRows * ySide / 1.75);
+    ctx.font = "28pt sans-serif";
+    ctx.strokeText("Pres any key to start a new game.", maxCols * xSide / 2, maxRows * ySide / 1.75 + 60);
+    ctx.fillText("Pres any key to start a new game.", maxCols * xSide / 2, maxRows * ySide / 1.75 + 60);
+  }
 };
 
 // Move the player across the screen
 Player.prototype.handleInput = function(key) {
-  switch (key) {
-    case 'left':
-      if (this.x > 0) {
-        this.x -= xSide;
-      }
-      break;
-    case 'up':
-      if (this.y > 0) {
-        this.y -= ySide;
-      }
-      break;
-    case 'right':
-      if (this.x < (maxCols - 1) * xSide) {
-        this.x += xSide;
-      }
-      break;
-    case 'down':
-      if (this.y < yStartPlayer + (maxRows - 2) * ySide) {
-        this.y += ySide;
-      }
-      break;
+  if (this.lives > 0) {
+    switch (key) {
+      case 'left':
+        if (this.x > 0) {
+          this.x -= xSide;
+        }
+        break;
+      case 'up':
+        if (this.y > 0) {
+          this.y -= ySide;
+        }
+        break;
+      case 'right':
+        if (this.x < (maxCols - 1) * xSide) {
+          this.x += xSide;
+        }
+        break;
+      case 'down':
+        if (this.y < yStartPlayer + (maxRows - 2) * ySide) {
+          this.y += ySide;
+        }
+        break;
+    }
+  // Player has 0 lives, start new game
+  } else {
+    newGame(this);
   }
-}
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
