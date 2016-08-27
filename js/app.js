@@ -55,8 +55,17 @@ var Player = function() {
 
 // Update the player's position, required method for game
 // Parameter: dt, a time delta between ticks
-Player.prototype.update = function(dt) {
-
+Player.prototype.update = function() {
+  if (this.y <= 0) {
+    this.x = Math.floor(maxCols / 2) * xSide;
+    this.y = yStartPlayer + (maxRows - 2) * ySide;
+  }
+  allEnemies.forEach(function(enemy) {
+    if (player.y - yStartPlayer === enemy.y - yStartEnemy && (player.x > enemy.x - xSide / 1.5 && player.x < enemy.x + xSide / 1.5)) {
+      player.x = Math.floor(maxCols / 2) * xSide;
+      player.y = yStartPlayer + (maxRows - 2) * ySide;
+    }
+  });
 };
 
 // Draw the player on the screen, required method for game
