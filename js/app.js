@@ -12,6 +12,7 @@ var Enemy = function(yRow) {
     // we've provided one for you to get started
     this.x = - 3 * xSide;
     this.y = yRow;
+    this.speed = getRandomSpeed();
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -21,7 +22,6 @@ var Enemy = function(yRow) {
 function getRandomSpeed() {
   return Math.random() * 450 + 50
 }
-var speed = getRandomSpeed();
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -31,9 +31,9 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     if (this.x >= (maxCols + 2) * xSide) {
       this.x = - 3 * xSide;
-      speed = getRandomSpeed();
+      this.speed = getRandomSpeed();
     } else {
-      this.x += speed * dt;
+      this.x += this.speed * dt;
     }
 };
 
@@ -93,7 +93,12 @@ Player.prototype.handleInput = function(key) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var enemyA1 = new Enemy(yStartEnemy + ySide * 2);
-var allEnemies = [enemyA1];
+var enemyA2 = new Enemy(yStartEnemy + ySide * 2);
+var enemyB1 = new Enemy(yStartEnemy + ySide * 1);
+var enemyB2 = new Enemy(yStartEnemy + ySide * 1);
+var enemyC1 = new Enemy(yStartEnemy);
+var enemyC2 = new Enemy(yStartEnemy);
+var allEnemies = [enemyA1, enemyA2, enemyB1, enemyB2, enemyC1, enemyC2];
 // Place the player object in a variable called player
 var player = new Player;
 
