@@ -1,6 +1,6 @@
 // Global variables
-const maxRows = 6;
-const maxCols = 5;
+const maxRows = 7;
+const maxCols = 7;
 const xSide = 101;
 const ySide = 83;
 const yStartPlayer = 72;
@@ -18,9 +18,9 @@ var Enemy = function(yRow) {
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Set a different speed for each enemy's ride
+// Set a different speed (between 150 and 600) for each enemy's ride
 function getRandomSpeed() {
-  return Math.random() * 450 + 50
+  return Math.random() * 450 + 150
 }
 
 // Update the enemy's position, required method for game
@@ -56,10 +56,12 @@ var Player = function() {
 // Update the player's position, required method for game
 // Parameter: dt, a time delta between ticks
 Player.prototype.update = function() {
+  // Player reachs goal
   if (this.y <= 0) {
     this.x = Math.floor(maxCols / 2) * xSide;
     this.y = yStartPlayer + (maxRows - 2) * ySide;
   }
+  // Player hits an enemy
   allEnemies.forEach(function(enemy) {
     if (player.y - yStartPlayer === enemy.y - yStartEnemy && (player.x > enemy.x - xSide / 1.75 && player.x < enemy.x + xSide / 1.75)) {
       player.x = Math.floor(maxCols / 2) * xSide;
@@ -101,13 +103,17 @@ Player.prototype.handleInput = function(key) {
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-var enemyA1 = new Enemy(yStartEnemy + ySide * 2);
-var enemyA2 = new Enemy(yStartEnemy + ySide * 2);
-var enemyB1 = new Enemy(yStartEnemy + ySide * 1);
-var enemyB2 = new Enemy(yStartEnemy + ySide * 1);
-var enemyC1 = new Enemy(yStartEnemy);
-var enemyC2 = new Enemy(yStartEnemy);
-var allEnemies = [enemyA1, enemyA2, enemyB1, enemyB2, enemyC1, enemyC2];
+var enemyA1 = new Enemy(yStartEnemy + ySide * 4);
+var enemyA2 = new Enemy(yStartEnemy + ySide * 4);
+var enemyB1 = new Enemy(yStartEnemy + ySide * 3);
+var enemyB2 = new Enemy(yStartEnemy + ySide * 3);
+var enemyC1 = new Enemy(yStartEnemy + ySide * 2);
+var enemyC2 = new Enemy(yStartEnemy + ySide * 2);
+var enemyD1 = new Enemy(yStartEnemy + ySide * 1);
+var enemyD2 = new Enemy(yStartEnemy + ySide * 1);
+var enemyE1 = new Enemy(yStartEnemy);
+var enemyE2 = new Enemy(yStartEnemy);
+var allEnemies = [enemyA1, enemyA2, enemyB1, enemyB2, enemyC1, enemyC2, enemyD1, enemyD2, enemyE1, enemyE2];
 // Place the player object in a variable called player
 var player = new Player;
 
