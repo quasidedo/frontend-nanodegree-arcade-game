@@ -10,12 +10,18 @@ const yStartEnemy = 62;
 var Enemy = function(yRow) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.x = - 1 * xSide;
+    this.x = - 3 * xSide;
     this.y = yRow;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 };
+
+// Set a different speed for each enemy's ride
+function getRandomSpeed() {
+  return Math.random() * 450 + 50
+}
+var speed = getRandomSpeed();
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -23,6 +29,12 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    if (this.x >= (maxCols + 2) * xSide) {
+      this.x = - 3 * xSide;
+      speed = getRandomSpeed();
+    } else {
+      this.x += speed * dt;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
