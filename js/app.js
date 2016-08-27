@@ -49,6 +49,8 @@ var Player = function() {
   // Initial player's position
   this.x = Math.floor(maxCols / 2) * xSide;
   this.y = yStartPlayer + (maxRows - 2) * ySide;
+  this.lives = 3;
+  this.score = 0;
   // Helps to load the image
   this.sprite = 'images/char-boy.png';
 }
@@ -60,12 +62,14 @@ Player.prototype.update = function() {
   if (this.y <= 0) {
     this.x = Math.floor(maxCols / 2) * xSide;
     this.y = yStartPlayer + (maxRows - 2) * ySide;
+    this.score += 100;
   }
   // Player hits an enemy
   allEnemies.forEach(function(enemy) {
     if (player.y - yStartPlayer === enemy.y - yStartEnemy && (player.x > enemy.x - xSide / 1.75 && player.x < enemy.x + xSide / 1.75)) {
       player.x = Math.floor(maxCols / 2) * xSide;
       player.y = yStartPlayer + (maxRows - 2) * ySide;
+      player.lives --;
     }
   });
 };
@@ -73,6 +77,11 @@ Player.prototype.update = function() {
 // Draw the player on the screen, required method for game
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  ctx.font = "21pt sans-serif"
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 707, 40);
+  ctx.strokeText("Score: " + this.score, 30, 30);
+  ctx.strokeText("Lives: " + this.lives, 570, 30);
 };
 
 // Move the player across the screen
