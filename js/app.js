@@ -3,12 +3,15 @@ const maxRows = 6;
 const maxCols = 5;
 const xSide = 101;
 const ySide = 83;
+const yStartPlayer = 72;
+const yStartEnemy = 62;
 
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(yRow) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
+    this.x = - 1 * xSide;
+    this.y = yRow;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -33,7 +36,7 @@ Enemy.prototype.render = function() {
 var Player = function() {
   // Initial player's position
   this.x = Math.floor(maxCols / 2) * xSide;
-  this.y = 72 + (maxRows - 2) * ySide;
+  this.y = yStartPlayer + (maxRows - 2) * ySide;
   // Helps to load the image
   this.sprite = 'images/char-boy.png';
 }
@@ -68,7 +71,7 @@ Player.prototype.handleInput = function(key) {
       }
       break;
     case 'down':
-      if (this.y < 72 + (maxRows - 2) * ySide) {
+      if (this.y < yStartPlayer + (maxRows - 2) * ySide) {
         this.y += ySide;
       }
       break;
@@ -77,8 +80,8 @@ Player.prototype.handleInput = function(key) {
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-var enemy1 = new Enemy;
-var allEnemies = [enemy1];
+var enemyA1 = new Enemy(yStartEnemy + ySide * 2);
+var allEnemies = [enemyA1];
 // Place the player object in a variable called player
 var player = new Player;
 
