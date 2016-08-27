@@ -61,7 +61,7 @@ Player.prototype.update = function() {
     this.y = yStartPlayer + (maxRows - 2) * ySide;
   }
   allEnemies.forEach(function(enemy) {
-    if (player.y - yStartPlayer === enemy.y - yStartEnemy && (player.x > enemy.x - xSide / 1.5 && player.x < enemy.x + xSide / 1.5)) {
+    if (player.y - yStartPlayer === enemy.y - yStartEnemy && (player.x > enemy.x - xSide / 1.75 && player.x < enemy.x + xSide / 1.75)) {
       player.x = Math.floor(maxCols / 2) * xSide;
       player.y = yStartPlayer + (maxRows - 2) * ySide;
     }
