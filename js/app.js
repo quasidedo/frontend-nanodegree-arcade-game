@@ -21,7 +21,7 @@ var Enemy = function(yRow) {
 
 // Set a different speed (between 150 and 600) for each enemy's ride
 Enemy.prototype.getRandomSpeed = function() {
-  return Math.random() * 450 + 150
+  return Math.random() * 450 + 150;
 };
 
 // Update the enemy's position, required method for game
@@ -51,7 +51,7 @@ var Player = function() {
   this.newGame();
   // Helps to load the image
   this.sprite = 'images/char-boy.png';
-}
+};
 
 // Update the player's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -80,7 +80,7 @@ Player.prototype.update = function() {
 // Draw the player on the screen, required method for game
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-  ctx.font = "21pt sans-serif"
+  ctx.font = "21pt sans-serif";
   ctx.lineWidth = 1;
   ctx.fillStyle = "white";
   ctx.textAlign = "left";
@@ -137,14 +137,14 @@ Player.prototype.newGame = function() {
   this.y = yStartPlayer + (maxRows - 2) * ySide;
   this.lives = 3;
   this.score = 0;
-}
+};
 
 // Items our player can take
 var Item = function() {
   this.appear();
   this.prob = 1/3;
   this.sprite = 'images/Gem Green.png';
-}
+};
 
 // Update the item's position
 Item.prototype.update = function() {
@@ -153,12 +153,12 @@ Item.prototype.update = function() {
     this.y = - 3 * ySide;
     player.score += 100;
   }
-}
+};
 
 // Draw the item on the screen
 Item.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // Show an item according to its probability
 Item.prototype.appear = function() {
@@ -167,12 +167,12 @@ Item.prototype.appear = function() {
     this.x = getRandomLocation(maxCols, xSide, 0);
     this.y = getRandomLocation(maxRows - 2, ySide, yStartItem);
   }
-}
+};
 
 // Set a different location for each item
 function getRandomLocation(max, side, start) {
   return (Math.floor(Math.random() * max)) * side + start;
-};
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -188,9 +188,9 @@ var enemyE1 = new Enemy(yStartEnemy);
 var enemyE2 = new Enemy(yStartEnemy);
 var allEnemies = [enemyA1, enemyA2, enemyB1, enemyB2, enemyC1, enemyC2, enemyD1, enemyD2, enemyE1, enemyE2];
 // Place the player object in a variable called player
-var player = new Player;
+var player = new Player();
 // Place the item object in a variable called item
-var item = new Item;
+var item = new Item();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
