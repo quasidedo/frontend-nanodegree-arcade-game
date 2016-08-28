@@ -13,14 +13,14 @@ var Enemy = function(yRow) {
     // we've provided one for you to get started
     this.x = - 3 * xSide;
     this.y = yRow;
-    this.speed = getRandomSpeed();
+    this.speed = this.getRandomSpeed();
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 };
 
 // Set a different speed (between 150 and 600) for each enemy's ride
-function getRandomSpeed() {
+Enemy.prototype.getRandomSpeed = function() {
   return Math.random() * 450 + 150
 };
 
@@ -32,7 +32,7 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     if (this.x >= (maxCols + 2) * xSide) {
       this.x = - 3 * xSide;
-      this.speed = getRandomSpeed();
+      this.speed = this.getRandomSpeed();
     } else {
       this.x += this.speed * dt;
     }
@@ -141,16 +141,31 @@ Player.prototype.newGame = function() {
 
 // Items our player can take
 var Item = function() {
-  this.x = getRandomLocation(maxCols, xSide, 0);
-  this.y = getRandomLocation(maxRows - 2, ySide, yStartItem);
+  this.appear();
+  this.prob = 1/3;
+  this.sprite = 'images/Gem Green.png';
 }
 
 // Update the item's position
 Item.prototype.update = function() {
   // Player takes an item
-  if (player.y - yStartPlayer === this.y - yStartItem && (player.x > this.x - xSide / 1.75 && player.x < this.x + xSide / 1.75)) {
+  if (player.y - yStartPlayer === this.y - yStartItem && player.x === this.x) {
     this.y = - 3 * ySide;
     player.score += 100;
+  }
+}
+
+// Draw the item on the screen
+Item.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+// Show an item according to its probability
+Item.prototype.appear = function() {
+  // Why is 'this.prob' undefinied? How can I access to it?
+  if (1/3 >= Math.random()) {
+    this.x = getRandomLocation(maxCols, xSide, 0);
+    this.y = getRandomLocation(maxRows - 2, ySide, yStartItem);
   }
 }
 
@@ -158,27 +173,6 @@ Item.prototype.update = function() {
 function getRandomLocation(max, side, start) {
   return (Math.floor(Math.random() * max)) * side + start;
 };
-
-// Draw the item on the screen
-Item.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
-
-Item.prototype.appear = function() {
-  if (this.prob >= Math.random()) {
-    this.x = getRandomLocation(maxCols, xSide, 0);
-    this.y = getRandomLocation(maxRows - 2, ySide, yStartItem);
-  }
-}
-
-var Gem = function() {
-  Item.call(this);
-  this.prob = 1/3;
-  this.sprite = 'images/Gem Green.png';
-}
-
-Gem.prototype = Object.create(Item.prototype);
-Gem.prototype.constructor = Gem;
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -195,7 +189,8 @@ var enemyE2 = new Enemy(yStartEnemy);
 var allEnemies = [enemyA1, enemyA2, enemyB1, enemyB2, enemyC1, enemyC2, enemyD1, enemyD2, enemyE1, enemyE2];
 // Place the player object in a variable called player
 var player = new Player;
-var gem = new Gem;
+// Place the item object in a variable called item
+var item = new Item;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
