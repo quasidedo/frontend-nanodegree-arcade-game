@@ -5,6 +5,7 @@ const xSide = 101;
 const ySide = 83;
 const yStartPlayer = 72;
 const yStartEnemy = 62;
+const yStartItem = 52;
 
 // Enemies our player must avoid
 var Enemy = function(yRow) {
@@ -138,6 +139,47 @@ Player.prototype.newGame = function() {
   this.score = 0;
 }
 
+// Items our player can take
+var Item = function() {
+  this.x = getRandomLocation(maxCols, xSide, 0);
+  this.y = getRandomLocation(maxRows - 2, ySide, yStartItem);
+}
+
+// Update the item's position
+Item.prototype.update = function() {
+  // Player takes an item
+  if (player.y - yStartPlayer === this.y - yStartItem && (player.x > this.x - xSide / 1.75 && player.x < this.x + xSide / 1.75)) {
+    this.y = - 3 * ySide;
+    player.score += 100;
+  }
+}
+
+// Set a different location for each item
+function getRandomLocation(max, side, start) {
+  return (Math.floor(Math.random() * max)) * side + start;
+};
+
+// Draw the item on the screen
+Item.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Item.prototype.appear = function() {
+  if (this.prob >= Math.random()) {
+    this.x = getRandomLocation(maxCols, xSide, 0);
+    this.y = getRandomLocation(maxRows - 2, ySide, yStartItem);
+  }
+}
+
+var Gem = function() {
+  Item.call(this);
+  this.prob = 1/3;
+  this.sprite = 'images/Gem Green.png';
+}
+
+Gem.prototype = Object.create(Item.prototype);
+Gem.prototype.constructor = Gem;
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var enemyA1 = new Enemy(yStartEnemy + ySide * 4);
@@ -153,6 +195,7 @@ var enemyE2 = new Enemy(yStartEnemy);
 var allEnemies = [enemyA1, enemyA2, enemyB1, enemyB2, enemyC1, enemyC2, enemyD1, enemyD2, enemyE1, enemyE2];
 // Place the player object in a variable called player
 var player = new Player;
+var gem = new Gem;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
