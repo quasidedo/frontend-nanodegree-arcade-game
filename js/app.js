@@ -141,8 +141,8 @@ Player.prototype.newGame = function() {
 
 // Items our player can take
 var Item = function() {
-  this.appear();
   this.prob = 1/3;
+  this.appear();
   this.sprite = 'images/Gem Green.png';
 };
 
@@ -163,7 +163,7 @@ Item.prototype.render = function() {
 // Show an item according to its probability
 Item.prototype.appear = function() {
   // Why is 'this.prob' undefinied? How can I access to it?
-  if (1/3 >= Math.random()) {
+  if (this.prob >= Math.random()) {
     this.x = getRandomLocation(maxCols, xSide, 0);
     this.y = getRandomLocation(maxRows - 2, ySide, yStartItem);
   }
