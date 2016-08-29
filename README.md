@@ -6,7 +6,7 @@ Luckily, there is a river just across the street, yay! But be careful with the b
 
 ## Installation
 
-Easy! Download a .zip copy, unzip it and open **index.html**.
+Easy! Play [here](https://quasidedo.github.io/frontend-nanodegree-arcade-game/). Furthermore, you can download a .zip copy, unzip it and open **index.html**.
 
 ## How to play
 
