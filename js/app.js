@@ -1,17 +1,21 @@
+'use strict';
+
 // Global variables
-const MAXROWS = 7;
-const MAXCOLS = 7;
-const XSIDE = 101;
-const YSIDE = 83;
-const YSTARTPLAYER = 72;
-const YSTARTENEMY = 62;
-const YSTARTITEM = 52;
+var constants = {
+  MAXROWS : 7,
+  MAXCOLS : 7,
+  XSIDE : 101,
+  YSIDE : 83,
+  YSTARTPLAYER : 72,
+  YSTARTENEMY : 62,
+  YSTARTITEM : 52
+};
 
 // Enemies our player must avoid
 var Enemy = function(yRow) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.x = - 3 * XSIDE;
+    this.x = - 3 * constants.XSIDE;
     this.y = yRow;
     this.speed = this.getRandomSpeed();
     // The image/sprite for our enemies, this uses
@@ -30,8 +34,8 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    if (this.x >= (MAXCOLS + 2) * XSIDE) {
-      this.x = - 3 * XSIDE;
+    if (this.x >= (constants.MAXCOLS + 2) * constants.XSIDE) {
+      this.x = - 3 * constants.XSIDE;
       this.speed = this.getRandomSpeed();
     } else {
       this.x += this.speed * dt;
@@ -58,24 +62,24 @@ var Player = function() {
 Player.prototype.update = function() {
   // Player reachs goal
   if (this.y <= 0) {
-    this.x = Math.floor(MAXCOLS / 2) * XSIDE;
-    this.y = YSTARTPLAYER + (MAXROWS - 2) * YSIDE;
+    this.x = Math.floor(constants.MAXCOLS / 2) * constants.XSIDE;
+    this.y = constants.YSTARTPLAYER + (constants.MAXROWS - 2) * constants.YSIDE;
     this.score += 100;
     gem.appear();
     heart.appear();
   }
   // Player hits an enemy
   allEnemies.forEach(function(enemy) {
-    if (this.y - YSTARTPLAYER === enemy.y - YSTARTENEMY && (this.x > enemy.x - XSIDE / 1.75 && this.x < enemy.x + XSIDE / 1.75)) {
-      this.x = Math.floor(MAXCOLS / 2) * XSIDE;
-      this.y = YSTARTPLAYER + (MAXROWS - 2) * YSIDE;
+    if (this.y - constants.YSTARTPLAYER === enemy.y - constants.YSTARTENEMY && (this.x > enemy.x - constants.XSIDE / 1.75 && this.x < enemy.x + constants.XSIDE / 1.75)) {
+      this.x = Math.floor(constants.MAXCOLS / 2) * constants.XSIDE;
+      this.y = constants.YSTARTPLAYER + (constants.MAXROWS - 2) * constants.YSIDE;
       this.lives --;
 
     }
   }.bind(this));
   // Player has 0 lives, hide player
   if (player.lives <= 0) {
-    player.x = - XSIDE;
+    player.x = - constants.XSIDE;
   }
 };
 
@@ -94,11 +98,11 @@ Player.prototype.render = function() {
     ctx.font = "63pt sans-serif";
     ctx.lineWidth = 4;
     ctx.textAlign = "center";
-    ctx.strokeText("Game Over!", MAXCOLS * XSIDE / 2, MAXROWS * YSIDE / 1.75);
-    ctx.fillText("Game Over!", MAXCOLS * XSIDE / 2, MAXROWS * YSIDE / 1.75);
+    ctx.strokeText("Game Over!", constants.MAXCOLS * constants.XSIDE / 2, constants.MAXROWS * constants.YSIDE / 1.75);
+    ctx.fillText("Game Over!", constants.MAXCOLS * constants.XSIDE / 2, constants.MAXROWS * constants.YSIDE / 1.75);
     ctx.font = "28pt sans-serif";
-    ctx.strokeText("Pres any key to start a new game.", MAXCOLS * XSIDE / 2, MAXROWS * YSIDE / 1.75 + 60);
-    ctx.fillText("Pres any key to start a new game.", MAXCOLS * XSIDE / 2, MAXROWS * YSIDE / 1.75 + 60);
+    ctx.strokeText("Pres any key to start a new game.", constants.MAXCOLS * constants.XSIDE / 2, constants.MAXROWS * constants.YSIDE / 1.75 + 60);
+    ctx.fillText("Pres any key to start a new game.", constants.MAXCOLS * constants.XSIDE / 2, constants.MAXROWS * constants.YSIDE / 1.75 + 60);
   }
 };
 
@@ -108,22 +112,22 @@ Player.prototype.handleInput = function(key) {
     switch (key) {
       case 'left':
         if (this.x > 0) {
-          this.x -= XSIDE;
+          this.x -= constants.XSIDE;
         }
         break;
       case 'up':
         if (this.y > 0) {
-          this.y -= YSIDE;
+          this.y -= constants.YSIDE;
         }
         break;
       case 'right':
-        if (this.x < (MAXCOLS - 1) * XSIDE) {
-          this.x += XSIDE;
+        if (this.x < (constants.MAXCOLS - 1) * constants.XSIDE) {
+          this.x += constants.XSIDE;
         }
         break;
       case 'down':
-        if (this.y < YSTARTPLAYER + (MAXROWS - 2) * YSIDE) {
-          this.y += YSIDE;
+        if (this.y < constants.YSTARTPLAYER + (constants.MAXROWS - 2) * constants.YSIDE) {
+          this.y += constants.YSIDE;
         }
         break;
     }
@@ -135,8 +139,8 @@ Player.prototype.handleInput = function(key) {
 
 // Start new game
 Player.prototype.newGame = function() {
-  this.x = Math.floor(MAXCOLS / 2) * XSIDE;
-  this.y = YSTARTPLAYER + (MAXROWS - 2) * YSIDE;
+  this.x = Math.floor(constants.MAXCOLS / 2) * constants.XSIDE;
+  this.y = constants.YSTARTPLAYER + (constants.MAXROWS - 2) * constants.YSIDE;
   this.lives = 3;
   this.score = 0;
 };
@@ -154,8 +158,8 @@ Item.prototype.render = function() {
 // Show an item according to its probability
 Item.prototype.appear = function() {
   if (this.prob >= Math.random()) {
-    this.x = this.getRandomLocation(MAXCOLS, XSIDE, 0);
-    this.y = this.getRandomLocation(MAXROWS - 2, YSIDE, YSTARTITEM);
+    this.x = this.getRandomLocation(constants.MAXCOLS, constants.XSIDE, 0);
+    this.y = this.getRandomLocation(constants.MAXROWS - 2, constants.YSIDE, constants.YSTARTITEM);
   }
 };
 
@@ -168,13 +172,16 @@ var Gem = function() {
   this.prob = 1/3;
   this.sprite = 'images/Gem Green.png';
 };
+// Gem is a subclass of Item
 Gem.prototype = Object.create(Item.prototype);
+// Retrieving Gem's constructor
 Gem.prototype.constructor = Gem;
+
 // Update the gem's position
 Gem.prototype.update = function() {
   // Player takes the gem
-  if (player.y - YSTARTPLAYER === this.y - YSTARTITEM && player.x === this.x) {
-    this.y = - 3 * YSIDE;
+  if (player.y - constants.YSTARTPLAYER === this.y - constants.YSTARTITEM && player.x === this.x) {
+    this.y = - 3 * constants.YSIDE;
     player.score += 100;
   }
 };
@@ -183,33 +190,36 @@ var Heart = function() {
   this.prob = 1/10;
   this.sprite = 'images/Heart.png';
 };
+// Heart is a subclass of Item
 Heart.prototype = Object.create(Item.prototype);
+// Retrieving Heart's constructor
 Heart.prototype.constructor = Heart;
+
 // Update heart's position
 Heart.prototype.update = function() {
   // Player takes the heart
-  if (player.y - YSTARTPLAYER === this.y - YSTARTITEM && player.x === this.x) {
-    this.y = - 3 * YSIDE;
+  if (player.y - constants.YSTARTPLAYER === this.y - constants.YSTARTITEM && player.x === this.x) {
+    this.y = - 3 * constants.YSIDE;
     player.lives ++;
   }
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-var enemyA1 = new Enemy(YSTARTENEMY + YSIDE * 4);
-var enemyA2 = new Enemy(YSTARTENEMY + YSIDE * 4);
-var enemyB1 = new Enemy(YSTARTENEMY + YSIDE * 3);
-var enemyB2 = new Enemy(YSTARTENEMY + YSIDE * 3);
-var enemyC1 = new Enemy(YSTARTENEMY + YSIDE * 2);
-var enemyC2 = new Enemy(YSTARTENEMY + YSIDE * 2);
-var enemyD1 = new Enemy(YSTARTENEMY + YSIDE * 1);
-var enemyD2 = new Enemy(YSTARTENEMY + YSIDE * 1);
-var enemyE1 = new Enemy(YSTARTENEMY);
-var enemyE2 = new Enemy(YSTARTENEMY);
+var enemyA1 = new Enemy(constants.YSTARTENEMY + constants.YSIDE * 4);
+var enemyA2 = new Enemy(constants.YSTARTENEMY + constants.YSIDE * 4);
+var enemyB1 = new Enemy(constants.YSTARTENEMY + constants.YSIDE * 3);
+var enemyB2 = new Enemy(constants.YSTARTENEMY + constants.YSIDE * 3);
+var enemyC1 = new Enemy(constants.YSTARTENEMY + constants.YSIDE * 2);
+var enemyC2 = new Enemy(constants.YSTARTENEMY + constants.YSIDE * 2);
+var enemyD1 = new Enemy(constants.YSTARTENEMY + constants.YSIDE * 1);
+var enemyD2 = new Enemy(constants.YSTARTENEMY + constants.YSIDE * 1);
+var enemyE1 = new Enemy(constants.YSTARTENEMY);
+var enemyE2 = new Enemy(constants.YSTARTENEMY);
 var allEnemies = [enemyA1, enemyA2, enemyB1, enemyB2, enemyC1, enemyC2, enemyD1, enemyD2, enemyE1, enemyE2];
 // Place the player object in a variable called player
 var player = new Player();
-// Place the item object in a variable called item
+// Place the items object in variables called gem and heart
 var gem = new Gem();
 var heart = new Heart();
 
