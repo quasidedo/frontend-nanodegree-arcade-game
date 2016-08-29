@@ -1,17 +1,17 @@
 // Global variables
-const maxRows = 7;
-const maxCols = 7;
-const xSide = 101;
-const ySide = 83;
-const yStartPlayer = 72;
-const yStartEnemy = 62;
-const yStartItem = 52;
+const MAXROWS = 7;
+const MAXCOLS = 7;
+const XSIDE = 101;
+const YSIDE = 83;
+const YSTARTPLAYER = 72;
+const YSTARTENEMY = 62;
+const YSTARTITEM = 52;
 
 // Enemies our player must avoid
 var Enemy = function(yRow) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.x = - 3 * xSide;
+    this.x = - 3 * XSIDE;
     this.y = yRow;
     this.speed = this.getRandomSpeed();
     // The image/sprite for our enemies, this uses
@@ -30,8 +30,8 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    if (this.x >= (maxCols + 2) * xSide) {
-      this.x = - 3 * xSide;
+    if (this.x >= (MAXCOLS + 2) * XSIDE) {
+      this.x = - 3 * XSIDE;
       this.speed = this.getRandomSpeed();
     } else {
       this.x += this.speed * dt;
@@ -58,22 +58,22 @@ var Player = function() {
 Player.prototype.update = function() {
   // Player reachs goal
   if (this.y <= 0) {
-    this.x = Math.floor(maxCols / 2) * xSide;
-    this.y = yStartPlayer + (maxRows - 2) * ySide;
+    this.x = Math.floor(MAXCOLS / 2) * XSIDE;
+    this.y = YSTARTPLAYER + (MAXROWS - 2) * YSIDE;
     this.score += 100;
   }
   // Player hits an enemy
   allEnemies.forEach(function(enemy) {
-    if (this.y - yStartPlayer === enemy.y - yStartEnemy && (this.x > enemy.x - xSide / 1.75 && this.x < enemy.x + xSide / 1.75)) {
-      this.x = Math.floor(maxCols / 2) * xSide;
-      this.y = yStartPlayer + (maxRows - 2) * ySide;
+    if (this.y - YSTARTPLAYER === enemy.y - YSTARTENEMY && (this.x > enemy.x - XSIDE / 1.75 && this.x < enemy.x + XSIDE / 1.75)) {
+      this.x = Math.floor(MAXCOLS / 2) * XSIDE;
+      this.y = YSTARTPLAYER + (MAXROWS - 2) * YSIDE;
       this.lives --;
 
     }
   }.bind(this));
   // Player has 0 lives, hide player
   if (player.lives <= 0) {
-    player.x = - xSide;
+    player.x = - XSIDE;
   }
 };
 
@@ -92,11 +92,11 @@ Player.prototype.render = function() {
     ctx.font = "63pt sans-serif";
     ctx.lineWidth = 4;
     ctx.textAlign = "center";
-    ctx.strokeText("Game Over!", maxCols * xSide / 2, maxRows * ySide / 1.75);
-    ctx.fillText("Game Over!", maxCols * xSide / 2, maxRows * ySide / 1.75);
+    ctx.strokeText("Game Over!", MAXCOLS * XSIDE / 2, MAXROWS * YSIDE / 1.75);
+    ctx.fillText("Game Over!", MAXCOLS * XSIDE / 2, MAXROWS * YSIDE / 1.75);
     ctx.font = "28pt sans-serif";
-    ctx.strokeText("Pres any key to start a new game.", maxCols * xSide / 2, maxRows * ySide / 1.75 + 60);
-    ctx.fillText("Pres any key to start a new game.", maxCols * xSide / 2, maxRows * ySide / 1.75 + 60);
+    ctx.strokeText("Pres any key to start a new game.", MAXCOLS * XSIDE / 2, MAXROWS * YSIDE / 1.75 + 60);
+    ctx.fillText("Pres any key to start a new game.", MAXCOLS * XSIDE / 2, MAXROWS * YSIDE / 1.75 + 60);
   }
 };
 
@@ -106,22 +106,22 @@ Player.prototype.handleInput = function(key) {
     switch (key) {
       case 'left':
         if (this.x > 0) {
-          this.x -= xSide;
+          this.x -= XSIDE;
         }
         break;
       case 'up':
         if (this.y > 0) {
-          this.y -= ySide;
+          this.y -= YSIDE;
         }
         break;
       case 'right':
-        if (this.x < (maxCols - 1) * xSide) {
-          this.x += xSide;
+        if (this.x < (MAXCOLS - 1) * XSIDE) {
+          this.x += XSIDE;
         }
         break;
       case 'down':
-        if (this.y < yStartPlayer + (maxRows - 2) * ySide) {
-          this.y += ySide;
+        if (this.y < YSTARTPLAYER + (MAXROWS - 2) * YSIDE) {
+          this.y += YSIDE;
         }
         break;
     }
@@ -133,8 +133,8 @@ Player.prototype.handleInput = function(key) {
 
 // Start new game
 Player.prototype.newGame = function() {
-  this.x = Math.floor(maxCols / 2) * xSide;
-  this.y = yStartPlayer + (maxRows - 2) * ySide;
+  this.x = Math.floor(MAXCOLS / 2) * XSIDE;
+  this.y = YSTARTPLAYER + (MAXROWS - 2) * YSIDE;
   this.lives = 3;
   this.score = 0;
 };
@@ -149,8 +149,8 @@ var Item = function() {
 // Update the item's position
 Item.prototype.update = function() {
   // Player takes an item
-  if (player.y - yStartPlayer === this.y - yStartItem && player.x === this.x) {
-    this.y = - 3 * ySide;
+  if (player.y - YSTARTPLAYER === this.y - YSTARTITEM && player.x === this.x) {
+    this.y = - 3 * YSIDE;
     player.score += 100;
   }
 };
@@ -164,8 +164,8 @@ Item.prototype.render = function() {
 Item.prototype.appear = function() {
   // Why is 'this.prob' undefinied? How can I access to it?
   if (this.prob >= Math.random()) {
-    this.x = this.getRandomLocation(maxCols, xSide, 0);
-    this.y = this.getRandomLocation(maxRows - 2, ySide, yStartItem);
+    this.x = this.getRandomLocation(MAXCOLS, XSIDE, 0);
+    this.y = this.getRandomLocation(MAXROWS - 2, YSIDE, YSTARTITEM);
   }
 };
 
@@ -176,16 +176,16 @@ Item.prototype.getRandomLocation = function(max, side, start) {
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-var enemyA1 = new Enemy(yStartEnemy + ySide * 4);
-var enemyA2 = new Enemy(yStartEnemy + ySide * 4);
-var enemyB1 = new Enemy(yStartEnemy + ySide * 3);
-var enemyB2 = new Enemy(yStartEnemy + ySide * 3);
-var enemyC1 = new Enemy(yStartEnemy + ySide * 2);
-var enemyC2 = new Enemy(yStartEnemy + ySide * 2);
-var enemyD1 = new Enemy(yStartEnemy + ySide * 1);
-var enemyD2 = new Enemy(yStartEnemy + ySide * 1);
-var enemyE1 = new Enemy(yStartEnemy);
-var enemyE2 = new Enemy(yStartEnemy);
+var enemyA1 = new Enemy(YSTARTENEMY + YSIDE * 4);
+var enemyA2 = new Enemy(YSTARTENEMY + YSIDE * 4);
+var enemyB1 = new Enemy(YSTARTENEMY + YSIDE * 3);
+var enemyB2 = new Enemy(YSTARTENEMY + YSIDE * 3);
+var enemyC1 = new Enemy(YSTARTENEMY + YSIDE * 2);
+var enemyC2 = new Enemy(YSTARTENEMY + YSIDE * 2);
+var enemyD1 = new Enemy(YSTARTENEMY + YSIDE * 1);
+var enemyD2 = new Enemy(YSTARTENEMY + YSIDE * 1);
+var enemyE1 = new Enemy(YSTARTENEMY);
+var enemyE2 = new Enemy(YSTARTENEMY);
 var allEnemies = [enemyA1, enemyA2, enemyB1, enemyB2, enemyC1, enemyC2, enemyD1, enemyD2, enemyE1, enemyE2];
 // Place the player object in a variable called player
 var player = new Player();
