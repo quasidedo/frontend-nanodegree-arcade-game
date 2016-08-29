@@ -164,15 +164,15 @@ Item.prototype.render = function() {
 Item.prototype.appear = function() {
   // Why is 'this.prob' undefinied? How can I access to it?
   if (this.prob >= Math.random()) {
-    this.x = getRandomLocation(maxCols, xSide, 0);
-    this.y = getRandomLocation(maxRows - 2, ySide, yStartItem);
+    this.x = this.getRandomLocation(maxCols, xSide, 0);
+    this.y = this.getRandomLocation(maxRows - 2, ySide, yStartItem);
   }
 };
 
 // Set a different location for each item
-function getRandomLocation(max, side, start) {
+Item.prototype.getRandomLocation = function(max, side, start) {
   return (Math.floor(Math.random() * max)) * side + start;
-}
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
