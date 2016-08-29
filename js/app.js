@@ -61,6 +61,8 @@ Player.prototype.update = function() {
     this.x = Math.floor(MAXCOLS / 2) * XSIDE;
     this.y = YSTARTPLAYER + (MAXROWS - 2) * YSIDE;
     this.score += 100;
+    gem.appear();
+    heart.appear();
   }
   // Player hits an enemy
   allEnemies.forEach(function(enemy) {
@@ -141,18 +143,7 @@ Player.prototype.newGame = function() {
 
 // Items our player can take
 var Item = function() {
-  this.prob = 1/3;
-  this.appear();
-  this.sprite = 'images/Gem Green.png';
-};
 
-// Update the item's position
-Item.prototype.update = function() {
-  // Player takes an item
-  if (player.y - YSTARTPLAYER === this.y - YSTARTITEM && player.x === this.x) {
-    this.y = - 3 * YSIDE;
-    player.score += 100;
-  }
 };
 
 // Draw the item on the screen
@@ -162,7 +153,6 @@ Item.prototype.render = function() {
 
 // Show an item according to its probability
 Item.prototype.appear = function() {
-  // Why is 'this.prob' undefinied? How can I access to it?
   if (this.prob >= Math.random()) {
     this.x = this.getRandomLocation(MAXCOLS, XSIDE, 0);
     this.y = this.getRandomLocation(MAXROWS - 2, YSIDE, YSTARTITEM);
@@ -172,6 +162,36 @@ Item.prototype.appear = function() {
 // Set a different location for each item
 Item.prototype.getRandomLocation = function(max, side, start) {
   return (Math.floor(Math.random() * max)) * side + start;
+};
+
+var Gem = function() {
+  this.prob = 1/3;
+  this.sprite = 'images/Gem Green.png';
+};
+Gem.prototype = Object.create(Item.prototype);
+Gem.prototype.constructor = Gem;
+// Update the gem's position
+Gem.prototype.update = function() {
+  // Player takes the gem
+  if (player.y - YSTARTPLAYER === this.y - YSTARTITEM && player.x === this.x) {
+    this.y = - 3 * YSIDE;
+    player.score += 100;
+  }
+};
+
+var Heart = function() {
+  this.prob = 1/10;
+  this.sprite = 'images/Heart.png';
+};
+Heart.prototype = Object.create(Item.prototype);
+Heart.prototype.constructor = Heart;
+// Update heart's position
+Heart.prototype.update = function() {
+  // Player takes the heart
+  if (player.y - YSTARTPLAYER === this.y - YSTARTITEM && player.x === this.x) {
+    this.y = - 3 * YSIDE;
+    player.lives ++;
+  }
 };
 
 // Now instantiate your objects.
@@ -190,7 +210,8 @@ var allEnemies = [enemyA1, enemyA2, enemyB1, enemyB2, enemyC1, enemyC2, enemyD1,
 // Place the player object in a variable called player
 var player = new Player();
 // Place the item object in a variable called item
-var item = new Item();
+var gem = new Gem();
+var heart = new Heart();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
