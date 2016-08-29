@@ -64,13 +64,13 @@ Player.prototype.update = function() {
   }
   // Player hits an enemy
   allEnemies.forEach(function(enemy) {
-    if (player.y - yStartPlayer === enemy.y - yStartEnemy && (player.x > enemy.x - xSide / 1.75 && player.x < enemy.x + xSide / 1.75)) {
-      player.x = Math.floor(maxCols / 2) * xSide;
-      player.y = yStartPlayer + (maxRows - 2) * ySide;
-      player.lives --;
+    if (this.y - yStartPlayer === enemy.y - yStartEnemy && (this.x > enemy.x - xSide / 1.75 && this.x < enemy.x + xSide / 1.75)) {
+      this.x = Math.floor(maxCols / 2) * xSide;
+      this.y = yStartPlayer + (maxRows - 2) * ySide;
+      this.lives --;
 
     }
-  });
+  }.bind(this));
   // Player has 0 lives, hide player
   if (player.lives <= 0) {
     player.x = - xSide;
@@ -88,7 +88,7 @@ Player.prototype.render = function() {
   ctx.strokeText("Score: " + this.score, 30, 30);
   ctx.strokeText("Lives: " + this.lives, 570, 30);
   // Player has 0 lives, write message
-  if (player.lives <= 0) {
+  if (this.lives <= 0) {
     ctx.font = "63pt sans-serif";
     ctx.lineWidth = 4;
     ctx.textAlign = "center";
